@@ -41,7 +41,7 @@ namespace ECommerce.Domain.Aggregates
             _orderItems = items;
             ConfigureStateMachine();
 
-            DomainEvents.Add(new OrderPlacedEvent(OrderId));
+            DomainEvents.Add(new OrderPlacedEvent(OrderId, CustomerId));
         }
         public void ConfigureStateMachine()
         {
@@ -97,18 +97,18 @@ namespace ECommerce.Domain.Aggregates
 
         public void Confirm()
         {
-            FireTrigger(OrderTrigger.Confirm, new OrderConfirmedEvent(OrderId));
+            FireTrigger(OrderTrigger.Confirm, new OrderConfirmedEvent(OrderId, CustomerId));
         }
 
         public void Ship()
         {
-            FireTrigger(OrderTrigger.Ship, new OrderConfirmedEvent(OrderId));
+            FireTrigger(OrderTrigger.Ship, new OrderConfirmedEvent(OrderId, CustomerId));
 
         }
 
         public void Deliver()
         {
-            FireTrigger(OrderTrigger.Deliver, new OrderConfirmedEvent(OrderId));
+            FireTrigger(OrderTrigger.Deliver, new OrderConfirmedEvent(OrderId, CustomerId));
 
 
         }
@@ -119,7 +119,7 @@ namespace ECommerce.Domain.Aggregates
                 throw new DomainException("Cancellation reason is required.");
 
             CancellationReason = reason;
-            FireTrigger(OrderTrigger.Cancel, new OrderCancelledEvent(OrderId));
+            FireTrigger(OrderTrigger.Cancel, new OrderCancelledEvent(OrderId, CustomerId));
         }
     }
 }
